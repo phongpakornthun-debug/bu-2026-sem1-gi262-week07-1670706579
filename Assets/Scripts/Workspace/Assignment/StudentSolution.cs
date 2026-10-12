@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 
 namespace Assignment
@@ -101,17 +102,69 @@ namespace Assignment
 
         public int[] AS01_FindFirstAndLastElementOfArray(int[] array, int target)
         {
-            throw new NotImplementedException();
+            int first = -1;
+            int last = -1;
+
+            for (int i = 0; i < array.Length; i++)
+            {
+                if (array[i] == target)
+                {
+                    if (first == -1)
+                    {
+                        first = i;
+                    }
+                    last = i;
+                }
+            }
+
+
+            if (first == -1)
+            {
+                return new int[] { -1 };
+            }
+
+
+            return new int[] { first, last };
         }
 
         public int AS02_FindMaxLessThan(int[] array, int target)
         {
-            throw new NotImplementedException();
+            int max = int.MinValue;
+            bool found = false;
+
+            foreach (int val in array)
+            {
+                if (val < target)
+                {
+                    if (!found || val > max)
+                    {
+                        max = val;
+                        found = true;
+                    }
+                }
+            }
+
+            return found ? max : -1;
         }
 
         public int[] AS03_FindRange(int[] array, int min, int max)
         {
-            throw new NotImplementedException();
+            if (min > max)
+            {
+                return new int[0];
+            }
+
+            List<int> result = new List<int>();
+
+            foreach (int val in array)
+            {
+                if (val >= min && val <= max)
+                {
+                    result.Add(val);
+                }
+            }
+
+            return result.ToArray();
         }
 
         #endregion
@@ -120,9 +173,31 @@ namespace Assignment
 
         public int[] EX01_FindTargetEnemies(int[] enemyHPs, int mana)
         {
-            throw new NotImplementedException();
-        }
+            int[] sortedHPs = (int[])enemyHPs.Clone();
+            Array.Sort(sortedHPs);
 
-        #endregion
+            List<int> defeated = new List<int>();
+            int currentManaUsed = 0;
+
+            foreach (int hp in sortedHPs)
+            {
+                if (currentManaUsed + hp <= mana)
+                {
+                    defeated.Add(hp);
+                    currentManaUsed += hp;
+                }
+                else
+                {
+
+                    break;
+                }
+            }
+
+
+            return defeated.ToArray();
+        }
     }
+
+    #endregion
+
 }
